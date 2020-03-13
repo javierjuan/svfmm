@@ -31,7 +31,7 @@ class MarkovRandomFieldBase
 public:
     enum Topology { ORTHOGONAL, COMPLETE };
     enum Tropism { ISOTROPIC, ANISOTROPIC };
-    enum Model { GAUSSIAN, TSTUDENT, NONLOCAL };
+    enum Model { GAUSS, TSTUDENT, LAPLACE, NONLOCAL };
     enum Estimation { FREQUENTIST, BAYESIAN };
     
     virtual Topology topology() const = 0;

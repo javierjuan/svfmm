@@ -5,11 +5,11 @@
 /* Copyright (C) 2020 Javier Juan Albarracin                              */
 /*                                                                        */
 /***************************************************************************
-* Gaussian Markov Random Field                                             *
+* Gauss Markov Random Field                                             *
 ***************************************************************************/
 
-#ifndef GAUSSIANMARKOVRANDOMFIELD_HPP
-#define GAUSSIANMARKOVRANDOMFIELD_HPP
+#ifndef GAUSSMARKOVRANDOMFIELD_HPP
+#define GAUSSMARKOVRANDOMFIELD_HPP
 
 #define cimg_display 0
 #include <CImg.h>
@@ -22,39 +22,39 @@
 
 using namespace Eigen;
 
-/***************************** Gaussian Markov Random Field *****************************/
+/***************************** Gauss Markov Random Field *****************************/
 
 template<int Dimensions>
-class GaussianMarkovRandomField : public virtual MarkovRandomFieldBase
+class GaussMarkovRandomField : public virtual MarkovRandomFieldBase
 {
 public:
-    virtual ~GaussianMarkovRandomField() {}
+    virtual ~GaussMarkovRandomField() {}
     
-    Model model() const { return GAUSSIAN; }
+    Model model() const { return GAUSS; }
     
-    GaussianMarkovRandomField<Dimensions>& operator = (const GaussianMarkovRandomField<Dimensions> &other) {}
+    GaussMarkovRandomField<Dimensions>& operator = (const GaussMarkovRandomField<Dimensions> &other) {}
     
 protected:
-    GaussianMarkovRandomField() {}
-    GaussianMarkovRandomField(const GaussianMarkovRandomField<Dimensions> &other) {}
+    GaussMarkovRandomField() {}
+    GaussMarkovRandomField(const GaussMarkovRandomField<Dimensions> &other) {}
 };
 
-/***************************** Isotropic Gaussian Markov Random Field *****************************/
+/***************************** Isotropic Gauss Markov Random Field *****************************/
 
 template<int Dimensions>
-class IsotropicGaussianMarkovRandomField : public IsotropicMarkovRandomField<Dimensions>, public GaussianMarkovRandomField<Dimensions>
+class IsotropicGaussMarkovRandomField : public IsotropicMarkovRandomField<Dimensions>, public GaussMarkovRandomField<Dimensions>
 {
 public:
-    virtual ~IsotropicGaussianMarkovRandomField() {}
+    virtual ~IsotropicGaussMarkovRandomField() {}
     
     ArrayXd sigma() const { return m_sigma; }
     
-    IsotropicGaussianMarkovRandomField<Dimensions>& operator = (const IsotropicGaussianMarkovRandomField<Dimensions> &other);
+    IsotropicGaussMarkovRandomField<Dimensions>& operator = (const IsotropicGaussMarkovRandomField<Dimensions> &other);
     
 protected:
-    IsotropicGaussianMarkovRandomField();
-    IsotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
-    IsotropicGaussianMarkovRandomField(const IsotropicGaussianMarkovRandomField<Dimensions> &other);
+    IsotropicGaussMarkovRandomField();
+    IsotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
+    IsotropicGaussMarkovRandomField(const IsotropicGaussMarkovRandomField<Dimensions> &other);
     
     ArrayXd m_sigma;
 };
@@ -62,8 +62,8 @@ protected:
 /***************************** Implementation *****************************/
 
 template<int Dimensions>
-IsotropicGaussianMarkovRandomField<Dimensions>::IsotropicGaussianMarkovRandomField()
-: IsotropicMarkovRandomField<Dimensions>(), GaussianMarkovRandomField<Dimensions>(), m_sigma(ArrayXd())
+IsotropicGaussMarkovRandomField<Dimensions>::IsotropicGaussMarkovRandomField()
+: IsotropicMarkovRandomField<Dimensions>(), GaussMarkovRandomField<Dimensions>(), m_sigma(ArrayXd())
 {
     if (Dimensions < 2 || Dimensions > 3)
     {
@@ -74,8 +74,8 @@ IsotropicGaussianMarkovRandomField<Dimensions>::IsotropicGaussianMarkovRandomFie
 }
 
 template<int Dimensions>
-IsotropicGaussianMarkovRandomField<Dimensions>::IsotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
-: IsotropicMarkovRandomField<Dimensions>(mask, classes, topology), GaussianMarkovRandomField<Dimensions>(), m_sigma(ArrayXd(classes))
+IsotropicGaussMarkovRandomField<Dimensions>::IsotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
+: IsotropicMarkovRandomField<Dimensions>(mask, classes, topology), GaussMarkovRandomField<Dimensions>(), m_sigma(ArrayXd(classes))
 {
     if (Dimensions < 2 || Dimensions > 3)
     {
@@ -86,8 +86,8 @@ IsotropicGaussianMarkovRandomField<Dimensions>::IsotropicGaussianMarkovRandomFie
 }
 
 template<int Dimensions>
-IsotropicGaussianMarkovRandomField<Dimensions>::IsotropicGaussianMarkovRandomField(const IsotropicGaussianMarkovRandomField<Dimensions> &other)
-: IsotropicMarkovRandomField<Dimensions>(other), GaussianMarkovRandomField<Dimensions>(other), m_sigma(other.sigma())
+IsotropicGaussMarkovRandomField<Dimensions>::IsotropicGaussMarkovRandomField(const IsotropicGaussMarkovRandomField<Dimensions> &other)
+: IsotropicMarkovRandomField<Dimensions>(other), GaussMarkovRandomField<Dimensions>(other), m_sigma(other.sigma())
 {
     if (Dimensions < 2 || Dimensions > 3)
     {
@@ -98,32 +98,32 @@ IsotropicGaussianMarkovRandomField<Dimensions>::IsotropicGaussianMarkovRandomFie
 }
 
 template<int Dimensions>
-IsotropicGaussianMarkovRandomField<Dimensions>& IsotropicGaussianMarkovRandomField<Dimensions>::operator = (const IsotropicGaussianMarkovRandomField<Dimensions> &other)
+IsotropicGaussMarkovRandomField<Dimensions>& IsotropicGaussMarkovRandomField<Dimensions>::operator = (const IsotropicGaussMarkovRandomField<Dimensions> &other)
 {
     IsotropicMarkovRandomField<Dimensions>::operator=(other);
-    GaussianMarkovRandomField<Dimensions>::operator=(other);
+    GaussMarkovRandomField<Dimensions>::operator=(other);
     
     m_sigma = other.sigma();
     
     return *this;
 }
 
-/***************************** Anisotropic Gaussian Markov Random Field *****************************/
+/***************************** Anisotropic Gauss Markov Random Field *****************************/
 
 template<int Dimensions>
-class AnisotropicGaussianMarkovRandomField : public AnisotropicMarkovRandomField<Dimensions>, public GaussianMarkovRandomField<Dimensions>
+class AnisotropicGaussMarkovRandomField : public AnisotropicMarkovRandomField<Dimensions>, public GaussMarkovRandomField<Dimensions>
 {
 public:
-    virtual ~AnisotropicGaussianMarkovRandomField() {}
+    virtual ~AnisotropicGaussMarkovRandomField() {}
     
     ArrayXXd sigma() const { return m_sigma; }
     
-    AnisotropicGaussianMarkovRandomField<Dimensions>& operator = (const AnisotropicGaussianMarkovRandomField<Dimensions> &other);
+    AnisotropicGaussMarkovRandomField<Dimensions>& operator = (const AnisotropicGaussMarkovRandomField<Dimensions> &other);
     
 protected:
-    AnisotropicGaussianMarkovRandomField();
-    AnisotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
-    AnisotropicGaussianMarkovRandomField(const AnisotropicGaussianMarkovRandomField<Dimensions> &other);
+    AnisotropicGaussMarkovRandomField();
+    AnisotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
+    AnisotropicGaussMarkovRandomField(const AnisotropicGaussMarkovRandomField<Dimensions> &other);
     
     ArrayXXd m_sigma;
 };
@@ -131,8 +131,8 @@ protected:
 /***************************** Implementation *****************************/
 
 template<int Dimensions>
-AnisotropicGaussianMarkovRandomField<Dimensions>::AnisotropicGaussianMarkovRandomField()
-: AnisotropicMarkovRandomField<Dimensions>(), GaussianMarkovRandomField<Dimensions>(), m_sigma(ArrayXXd())
+AnisotropicGaussMarkovRandomField<Dimensions>::AnisotropicGaussMarkovRandomField()
+: AnisotropicMarkovRandomField<Dimensions>(), GaussMarkovRandomField<Dimensions>(), m_sigma(ArrayXXd())
 {
     if (Dimensions < 2 || Dimensions > 3)
     {
@@ -143,8 +143,8 @@ AnisotropicGaussianMarkovRandomField<Dimensions>::AnisotropicGaussianMarkovRando
 }
 
 template<int Dimensions>
-AnisotropicGaussianMarkovRandomField<Dimensions>::AnisotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
-: AnisotropicMarkovRandomField<Dimensions>(mask, classes, topology), GaussianMarkovRandomField<Dimensions>(), m_sigma(ArrayXXd(classes, this->m_directions))
+AnisotropicGaussMarkovRandomField<Dimensions>::AnisotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
+: AnisotropicMarkovRandomField<Dimensions>(mask, classes, topology), GaussMarkovRandomField<Dimensions>(), m_sigma(ArrayXXd(classes, this->m_directions))
 {
     if (Dimensions < 2 || Dimensions > 3)
     {
@@ -155,8 +155,8 @@ AnisotropicGaussianMarkovRandomField<Dimensions>::AnisotropicGaussianMarkovRando
 }
 
 template<int Dimensions>
-AnisotropicGaussianMarkovRandomField<Dimensions>::AnisotropicGaussianMarkovRandomField(const AnisotropicGaussianMarkovRandomField<Dimensions> &other)
-: AnisotropicMarkovRandomField<Dimensions>(other), GaussianMarkovRandomField<Dimensions>(other), m_sigma(other.sigma())
+AnisotropicGaussMarkovRandomField<Dimensions>::AnisotropicGaussMarkovRandomField(const AnisotropicGaussMarkovRandomField<Dimensions> &other)
+: AnisotropicMarkovRandomField<Dimensions>(other), GaussMarkovRandomField<Dimensions>(other), m_sigma(other.sigma())
 {
     if (Dimensions < 2 || Dimensions > 3)
     {
@@ -167,10 +167,10 @@ AnisotropicGaussianMarkovRandomField<Dimensions>::AnisotropicGaussianMarkovRando
 }
 
 template<int Dimensions>
-AnisotropicGaussianMarkovRandomField<Dimensions>& AnisotropicGaussianMarkovRandomField<Dimensions>::operator = (const AnisotropicGaussianMarkovRandomField<Dimensions> &other)
+AnisotropicGaussMarkovRandomField<Dimensions>& AnisotropicGaussMarkovRandomField<Dimensions>::operator = (const AnisotropicGaussMarkovRandomField<Dimensions> &other)
 {
     AnisotropicMarkovRandomField<Dimensions>::operator=(other);
-    GaussianMarkovRandomField<Dimensions>::operator=(other);
+    GaussMarkovRandomField<Dimensions>::operator=(other);
     
     m_sigma = other.sigma();
     

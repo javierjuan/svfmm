@@ -5,32 +5,32 @@
 /* Copyright (C) 2020 Javier Juan Albarracin                                */
 /*                                                                          */
 /*****************************************************************************
-* Frequentist Gaussian Markov Random Fields                                  *
+* Frequentist Gauss Markov Random Fields                                     *
 *****************************************************************************/
 
-#ifndef FREQUENTISTGAUSSIANMARKOVRANDOMFIELD_HPP
-#define FREQUENTISTGAUSSIANMARKOVRANDOMFIELD_HPP
+#ifndef FREQUENTISTGAUSSMARKOVRANDOMFIELD_HPP
+#define FREQUENTISTGAUSSMARKOVRANDOMFIELD_HPP
 
 #define cimg_display 0
 #include <CImg.h>
 #include <omp.h>
 #include "MarkovRandomField.hpp"
-#include "GaussianMarkovRandomField.hpp"
+#include "GaussMarkovRandomField.hpp"
 
 using namespace Eigen;
 
-/***************************** Frequentist Isotropic Gaussian Markov Random Field *****************************/
+/***************************** Frequentist Isotropic Gauss Markov Random Field *****************************/
 
 template<int Dimensions>
-class FrequentistIsotropicGaussianMarkovRandomField : public IsotropicGaussianMarkovRandomField<Dimensions>, public FrequentistMarkovRandomField<Dimensions>
+class FrequentistIsotropicGaussMarkovRandomField : public IsotropicGaussMarkovRandomField<Dimensions>, public FrequentistMarkovRandomField<Dimensions>
 {
 public:
-    FrequentistIsotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
-    FrequentistIsotropicGaussianMarkovRandomField(const FrequentistIsotropicGaussianMarkovRandomField<Dimensions> &other);
+    FrequentistIsotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
+    FrequentistIsotropicGaussMarkovRandomField(const FrequentistIsotropicGaussMarkovRandomField<Dimensions> &other);
 
     std::unique_ptr<MarkovRandomField<Dimensions>> clone() const;
     
-    FrequentistIsotropicGaussianMarkovRandomField<Dimensions> & operator = (const FrequentistIsotropicGaussianMarkovRandomField<Dimensions> &other);
+    FrequentistIsotropicGaussMarkovRandomField<Dimensions> & operator = (const FrequentistIsotropicGaussMarkovRandomField<Dimensions> &other);
     
     void initialization(const ArrayXXd &coefficients);
     void updateDistributions();
@@ -38,7 +38,7 @@ public:
     double logLikelihood();
 
 private:
-    FrequentistIsotropicGaussianMarkovRandomField();
+    FrequentistIsotropicGaussMarkovRandomField();
     
     void updateCoefficients(const ArrayXXd &posteriorProbabilities);
     void updateVariances();
@@ -47,40 +47,40 @@ private:
 /***************************** Implementation *****************************/
 
 template<int Dimensions>
-FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::FrequentistIsotropicGaussianMarkovRandomField()
-: IsotropicGaussianMarkovRandomField<Dimensions>(), FrequentistMarkovRandomField<Dimensions>()
+FrequentistIsotropicGaussMarkovRandomField<Dimensions>::FrequentistIsotropicGaussMarkovRandomField()
+: IsotropicGaussMarkovRandomField<Dimensions>(), FrequentistMarkovRandomField<Dimensions>()
 {
 }
 
 template<int Dimensions>
-FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::FrequentistIsotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
-: IsotropicGaussianMarkovRandomField<Dimensions>(mask, classes, topology), FrequentistMarkovRandomField<Dimensions>()
+FrequentistIsotropicGaussMarkovRandomField<Dimensions>::FrequentistIsotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
+: IsotropicGaussMarkovRandomField<Dimensions>(mask, classes, topology), FrequentistMarkovRandomField<Dimensions>()
 {
 }
 
 template<int Dimensions>
-FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::FrequentistIsotropicGaussianMarkovRandomField(const FrequentistIsotropicGaussianMarkovRandomField<Dimensions> &other)
-: IsotropicGaussianMarkovRandomField<Dimensions>(other), FrequentistMarkovRandomField<Dimensions>(other)
+FrequentistIsotropicGaussMarkovRandomField<Dimensions>::FrequentistIsotropicGaussMarkovRandomField(const FrequentistIsotropicGaussMarkovRandomField<Dimensions> &other)
+: IsotropicGaussMarkovRandomField<Dimensions>(other), FrequentistMarkovRandomField<Dimensions>(other)
 {
 }
 
 template<int Dimensions>
-FrequentistIsotropicGaussianMarkovRandomField<Dimensions>& FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::operator = (const FrequentistIsotropicGaussianMarkovRandomField<Dimensions> &other)
+FrequentistIsotropicGaussMarkovRandomField<Dimensions>& FrequentistIsotropicGaussMarkovRandomField<Dimensions>::operator = (const FrequentistIsotropicGaussMarkovRandomField<Dimensions> &other)
 {
-    IsotropicGaussianMarkovRandomField<Dimensions>::operator=(other);
+    IsotropicGaussMarkovRandomField<Dimensions>::operator=(other);
     FrequentistMarkovRandomField<Dimensions>::operator=(other);
     
     return *this;
 }
 
 template<int Dimensions>
-std::unique_ptr<MarkovRandomField<Dimensions>> FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::clone() const
+std::unique_ptr<MarkovRandomField<Dimensions>> FrequentistIsotropicGaussMarkovRandomField<Dimensions>::clone() const
 {
-    return std::unique_ptr<MarkovRandomField<Dimensions>>(new FrequentistIsotropicGaussianMarkovRandomField<Dimensions>(*this));
+    return std::unique_ptr<MarkovRandomField<Dimensions>>(new FrequentistIsotropicGaussMarkovRandomField<Dimensions>(*this));
 }
 
 template<int Dimensions>
-void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
+void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
 {
     if (coefficients.rows() != this->m_nodes && coefficients.cols() != this->m_classes)
     {
@@ -94,19 +94,19 @@ void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::initialization(c
 }
 
 template<int Dimensions>
-void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::updateDistributions()
+void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::updateDistributions()
 {
 }
 
 template<int Dimensions>
-void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
+void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
 {
     updateCoefficients(posteriorProbabilities);
     updateVariances();
 }
 
 template<int Dimensions>
-void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
+void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
@@ -126,7 +126,7 @@ void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::updateCoefficien
             double r1, r2;
 
             if (this->cuadraticSolver(a, b, c, r1, r2))
-                coeffs_i(j) = r1;
+                coeffs_i(j) = r1 > r2 ? r1 : r2;
             else
                 coeffs_i(j) = SVFMM_ZERO;
         }
@@ -136,7 +136,7 @@ void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::updateCoefficien
 }
 
 template<int Dimensions>
-void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::updateVariances()
+void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::updateVariances()
 {
 #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
@@ -155,7 +155,7 @@ void FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::updateVariances(
 }
 
 template<int Dimensions>
-double FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::logLikelihood()
+double FrequentistIsotropicGaussMarkovRandomField<Dimensions>::logLikelihood()
 {
     const double NM = (double) (this->m_nodes * this->m_cliques);
     const double NKMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_cliques) * 0.918938533204673;
@@ -181,15 +181,15 @@ double FrequentistIsotropicGaussianMarkovRandomField<Dimensions>::logLikelihood(
 /***************************** Frequentist Anisotropic Gaussian Markov Random Field *****************************/
 
 template<int Dimensions>
-class FrequentistAnisotropicGaussianMarkovRandomField : public AnisotropicGaussianMarkovRandomField<Dimensions>, public FrequentistMarkovRandomField<Dimensions>
+class FrequentistAnisotropicGaussMarkovRandomField : public AnisotropicGaussMarkovRandomField<Dimensions>, public FrequentistMarkovRandomField<Dimensions>
 {
 public:
-    FrequentistAnisotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
-    FrequentistAnisotropicGaussianMarkovRandomField(const FrequentistAnisotropicGaussianMarkovRandomField<Dimensions> &other);
+    FrequentistAnisotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
+    FrequentistAnisotropicGaussMarkovRandomField(const FrequentistAnisotropicGaussMarkovRandomField<Dimensions> &other);
 
     std::unique_ptr<MarkovRandomField<Dimensions>> clone() const;
     
-    FrequentistAnisotropicGaussianMarkovRandomField<Dimensions> & operator = (const FrequentistAnisotropicGaussianMarkovRandomField<Dimensions> &other);
+    FrequentistAnisotropicGaussMarkovRandomField<Dimensions> & operator = (const FrequentistAnisotropicGaussMarkovRandomField<Dimensions> &other);
     
     void initialization(const ArrayXXd &coefficients);
     void updateDistributions();
@@ -197,7 +197,7 @@ public:
     double logLikelihood();
 
 private:
-    FrequentistAnisotropicGaussianMarkovRandomField();
+    FrequentistAnisotropicGaussMarkovRandomField();
     
     void updateCoefficients(const ArrayXXd &posteriorProbabilities);
     void updateVariances();
@@ -206,40 +206,40 @@ private:
 /***************************** Implementation *****************************/
 
 template<int Dimensions>
-FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::FrequentistAnisotropicGaussianMarkovRandomField()
-: AnisotropicGaussianMarkovRandomField<Dimensions>(), FrequentistMarkovRandomField<Dimensions>()
+FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::FrequentistAnisotropicGaussMarkovRandomField()
+: AnisotropicGaussMarkovRandomField<Dimensions>(), FrequentistMarkovRandomField<Dimensions>()
 {
 }
 
 template<int Dimensions>
-FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::FrequentistAnisotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
-: AnisotropicGaussianMarkovRandomField<Dimensions>(mask, classes, topology), FrequentistMarkovRandomField<Dimensions>()
+FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::FrequentistAnisotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
+: AnisotropicGaussMarkovRandomField<Dimensions>(mask, classes, topology), FrequentistMarkovRandomField<Dimensions>()
 {
 }
 
 template<int Dimensions>
-FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::FrequentistAnisotropicGaussianMarkovRandomField(const FrequentistAnisotropicGaussianMarkovRandomField<Dimensions> &other)
-: AnisotropicGaussianMarkovRandomField<Dimensions>(other), FrequentistMarkovRandomField<Dimensions>(other)
+FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::FrequentistAnisotropicGaussMarkovRandomField(const FrequentistAnisotropicGaussMarkovRandomField<Dimensions> &other)
+: AnisotropicGaussMarkovRandomField<Dimensions>(other), FrequentistMarkovRandomField<Dimensions>(other)
 {
 }
 
 template<int Dimensions>
-FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>& FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::operator = (const FrequentistAnisotropicGaussianMarkovRandomField<Dimensions> &other)
+FrequentistAnisotropicGaussMarkovRandomField<Dimensions>& FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::operator = (const FrequentistAnisotropicGaussMarkovRandomField<Dimensions> &other)
 {
-    AnisotropicGaussianMarkovRandomField<Dimensions>::operator=(other);
+    AnisotropicGaussMarkovRandomField<Dimensions>::operator=(other);
     FrequentistMarkovRandomField<Dimensions>::operator=(other);
     
     return *this;
 }
 
 template<int Dimensions>
-std::unique_ptr<MarkovRandomField<Dimensions>> FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::clone() const
+std::unique_ptr<MarkovRandomField<Dimensions>> FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::clone() const
 {
-    return std::unique_ptr<MarkovRandomField<Dimensions>>(new FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>(*this));
+    return std::unique_ptr<MarkovRandomField<Dimensions>>(new FrequentistAnisotropicGaussMarkovRandomField<Dimensions>(*this));
 }
 
 template<int Dimensions>
-void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
+void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
 {
     if (coefficients.rows() != this->m_nodes && coefficients.cols() != this->m_classes)
     {
@@ -253,19 +253,19 @@ void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::initialization
 }
 
 template<int Dimensions>
-void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::updateDistributions()
+void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::updateDistributions()
 {
 }
 
 template<int Dimensions>
-void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
+void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
 {
     updateCoefficients(posteriorProbabilities);
     updateVariances();
 }
 
 template<int Dimensions>
-void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
+void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
@@ -293,7 +293,7 @@ void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::updateCoeffici
             double r1, r2;
 
             if (this->cuadraticSolver(a, b, c, r1, r2))
-                coeffs_i(j) = r1;
+                coeffs_i(j) = r1 > r2 ? r1 : r2;
             else
                 coeffs_i(j) = SVFMM_ZERO;
         }
@@ -303,7 +303,7 @@ void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::updateCoeffici
 }
 
 template<int Dimensions>
-void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::updateVariances()
+void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::updateVariances()
 {
 #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
@@ -325,7 +325,7 @@ void FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::updateVariance
 }
 
 template<int Dimensions>
-double FrequentistAnisotropicGaussianMarkovRandomField<Dimensions>::logLikelihood()
+double FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::logLikelihood()
 {
     const double NM = (double) (this->m_nodes * this->m_cliques);
     const double NKDMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_directions * this->m_cliques) * 0.918938533204673;

@@ -5,32 +5,32 @@
 /* Copyright (C) 2020 Javier Juan Albarracin                                */
 /*                                                                          */
 /*****************************************************************************
-* Bayesian Gaussian Markov Random Fields                                     *
+* Bayesian Gauss Markov Random Fields                                        *
 *****************************************************************************/
 
-#ifndef BAYESIANGAUSSIANMARKOVRANDOMFIELD_HPP
-#define BAYESIANGAUSSIANMARKOVRANDOMFIELD_HPP
+#ifndef BAYESIANGAUSSMARKOVRANDOMFIELD_HPP
+#define BAYESIANGAUSSMARKOVRANDOMFIELD_HPP
 
 #define cimg_display 0
 #include <CImg.h>
 #include <omp.h>
 #include "MarkovRandomField.hpp"
-#include "GaussianMarkovRandomField.hpp"
+#include "GaussMarkovRandomField.hpp"
 
 using namespace Eigen;
 
-/***************************** Bayesian Isotropic Gaussian Markov Random Field *****************************/
+/***************************** Bayesian Isotropic Gauss Markov Random Field *****************************/
 
 template<int Dimensions>
-class BayesianIsotropicGaussianMarkovRandomField : public IsotropicGaussianMarkovRandomField<Dimensions>, public BayesianMarkovRandomField<Dimensions>
+class BayesianIsotropicGaussMarkovRandomField : public IsotropicGaussMarkovRandomField<Dimensions>, public BayesianMarkovRandomField<Dimensions>
 {
 public:
-    BayesianIsotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
-    BayesianIsotropicGaussianMarkovRandomField(const BayesianIsotropicGaussianMarkovRandomField<Dimensions> &other);
+    BayesianIsotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
+    BayesianIsotropicGaussMarkovRandomField(const BayesianIsotropicGaussMarkovRandomField<Dimensions> &other);
 
     std::unique_ptr<MarkovRandomField<Dimensions>> clone() const;
     
-    BayesianIsotropicGaussianMarkovRandomField<Dimensions> & operator = (const BayesianIsotropicGaussianMarkovRandomField<Dimensions> &other);
+    BayesianIsotropicGaussMarkovRandomField<Dimensions> & operator = (const BayesianIsotropicGaussMarkovRandomField<Dimensions> &other);
     
     void initialization(const ArrayXXd &coefficients);
     void updateDistributions();
@@ -38,7 +38,7 @@ public:
     double logLikelihood();
 
 private:
-    BayesianIsotropicGaussianMarkovRandomField();
+    BayesianIsotropicGaussMarkovRandomField();
     
     void updateCoefficients(const ArrayXXd &posteriorProbabilities);
     void updateVariances();
@@ -47,40 +47,40 @@ private:
 /***************************** Implementation *****************************/
 
 template<int Dimensions>
-BayesianIsotropicGaussianMarkovRandomField<Dimensions>::BayesianIsotropicGaussianMarkovRandomField()
-: IsotropicGaussianMarkovRandomField<Dimensions>(), BayesianMarkovRandomField<Dimensions>()
+BayesianIsotropicGaussMarkovRandomField<Dimensions>::BayesianIsotropicGaussMarkovRandomField()
+: IsotropicGaussMarkovRandomField<Dimensions>(), BayesianMarkovRandomField<Dimensions>()
 {
 }
 
 template<int Dimensions>
-BayesianIsotropicGaussianMarkovRandomField<Dimensions>::BayesianIsotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
-: IsotropicGaussianMarkovRandomField<Dimensions>(mask, classes, topology), BayesianMarkovRandomField<Dimensions>(this->m_coefficients)
+BayesianIsotropicGaussMarkovRandomField<Dimensions>::BayesianIsotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
+: IsotropicGaussMarkovRandomField<Dimensions>(mask, classes, topology), BayesianMarkovRandomField<Dimensions>(this->m_coefficients)
 {
 }
 
 template<int Dimensions>
-BayesianIsotropicGaussianMarkovRandomField<Dimensions>::BayesianIsotropicGaussianMarkovRandomField(const BayesianIsotropicGaussianMarkovRandomField<Dimensions> &other)
-: IsotropicGaussianMarkovRandomField<Dimensions>(other), BayesianMarkovRandomField<Dimensions>(other)
+BayesianIsotropicGaussMarkovRandomField<Dimensions>::BayesianIsotropicGaussMarkovRandomField(const BayesianIsotropicGaussMarkovRandomField<Dimensions> &other)
+: IsotropicGaussMarkovRandomField<Dimensions>(other), BayesianMarkovRandomField<Dimensions>(other)
 {
 }
 
 template<int Dimensions>
-BayesianIsotropicGaussianMarkovRandomField<Dimensions>& BayesianIsotropicGaussianMarkovRandomField<Dimensions>::operator = (const BayesianIsotropicGaussianMarkovRandomField<Dimensions> &other)
+BayesianIsotropicGaussMarkovRandomField<Dimensions>& BayesianIsotropicGaussMarkovRandomField<Dimensions>::operator = (const BayesianIsotropicGaussMarkovRandomField<Dimensions> &other)
 {
-    IsotropicGaussianMarkovRandomField<Dimensions>::operator=(other);
+    IsotropicGaussMarkovRandomField<Dimensions>::operator=(other);
     BayesianMarkovRandomField<Dimensions>::operator=(other);
     
     return *this;
 }
 
 template<int Dimensions>
-std::unique_ptr<MarkovRandomField<Dimensions>> BayesianIsotropicGaussianMarkovRandomField<Dimensions>::clone() const
+std::unique_ptr<MarkovRandomField<Dimensions>> BayesianIsotropicGaussMarkovRandomField<Dimensions>::clone() const
 {
-    return std::unique_ptr<MarkovRandomField<Dimensions>>(new BayesianIsotropicGaussianMarkovRandomField<Dimensions>(*this));
+    return std::unique_ptr<MarkovRandomField<Dimensions>>(new BayesianIsotropicGaussMarkovRandomField<Dimensions>(*this));
 }
 
 template<int Dimensions>
-void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
+void BayesianIsotropicGaussMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
 {
     if (coefficients.rows() != this->m_nodes && coefficients.cols() != this->m_classes)
     {
@@ -95,19 +95,19 @@ void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::initialization(cons
 }
 
 template<int Dimensions>
-void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::updateDistributions()
+void BayesianIsotropicGaussMarkovRandomField<Dimensions>::updateDistributions()
 {
 }
 
 template<int Dimensions>
-void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
+void BayesianIsotropicGaussMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
 {
     updateCoefficients(posteriorProbabilities);
     updateVariances();
 }
 
 template<int Dimensions>
-void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
+void BayesianIsotropicGaussMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     ArrayXXd newConcentrations(this->m_nodes, this->m_classes);
 #pragma omp parallel for
@@ -150,7 +150,7 @@ void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::updateCoefficients(
 }
 
 template<int Dimensions>
-void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::updateVariances()
+void BayesianIsotropicGaussMarkovRandomField<Dimensions>::updateVariances()
 {
 #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
@@ -169,7 +169,7 @@ void BayesianIsotropicGaussianMarkovRandomField<Dimensions>::updateVariances()
 }
 
 template<int Dimensions>
-double BayesianIsotropicGaussianMarkovRandomField<Dimensions>::logLikelihood()
+double BayesianIsotropicGaussMarkovRandomField<Dimensions>::logLikelihood()
 {
     const double NM = (double) (this->m_nodes * this->m_cliques);
     const double NKMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_cliques) * 0.918938533204673;
@@ -192,18 +192,18 @@ double BayesianIsotropicGaussianMarkovRandomField<Dimensions>::logLikelihood()
     return logLikelihood.sum() - NKMLog2PIHalf;
 }
 
-/***************************** Bayesian Anisotropic Gaussian Markov Random Field *****************************/
+/***************************** Bayesian Anisotropic Gauss Markov Random Field *****************************/
 
 template<int Dimensions>
-class BayesianAnisotropicGaussianMarkovRandomField : public AnisotropicGaussianMarkovRandomField<Dimensions>, public BayesianMarkovRandomField<Dimensions>
+class BayesianAnisotropicGaussMarkovRandomField : public AnisotropicGaussMarkovRandomField<Dimensions>, public BayesianMarkovRandomField<Dimensions>
 {
 public:
-    BayesianAnisotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
-    BayesianAnisotropicGaussianMarkovRandomField(const BayesianAnisotropicGaussianMarkovRandomField<Dimensions> &other);
+    BayesianAnisotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology);
+    BayesianAnisotropicGaussMarkovRandomField(const BayesianAnisotropicGaussMarkovRandomField<Dimensions> &other);
 
     std::unique_ptr<MarkovRandomField<Dimensions>> clone() const;
     
-    BayesianAnisotropicGaussianMarkovRandomField<Dimensions> & operator = (const BayesianAnisotropicGaussianMarkovRandomField<Dimensions> &other);
+    BayesianAnisotropicGaussMarkovRandomField<Dimensions> & operator = (const BayesianAnisotropicGaussMarkovRandomField<Dimensions> &other);
     
     void initialization(const ArrayXXd &coefficients);
     void updateDistributions();
@@ -211,7 +211,7 @@ public:
     double logLikelihood();
 
 private:
-    BayesianAnisotropicGaussianMarkovRandomField();
+    BayesianAnisotropicGaussMarkovRandomField();
     
     void updateCoefficients(const ArrayXXd &posteriorProbabilities);
     void updateVariances();
@@ -220,40 +220,40 @@ private:
 /***************************** Implementation *****************************/
 
 template<int Dimensions>
-BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::BayesianAnisotropicGaussianMarkovRandomField()
-: AnisotropicGaussianMarkovRandomField<Dimensions>(), BayesianMarkovRandomField<Dimensions>()
+BayesianAnisotropicGaussMarkovRandomField<Dimensions>::BayesianAnisotropicGaussMarkovRandomField()
+: AnisotropicGaussMarkovRandomField<Dimensions>(), BayesianMarkovRandomField<Dimensions>()
 {
 }
 
 template<int Dimensions>
-BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::BayesianAnisotropicGaussianMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
-: AnisotropicGaussianMarkovRandomField<Dimensions>(mask, classes, topology), BayesianMarkovRandomField<Dimensions>(this->m_coefficients)
+BayesianAnisotropicGaussMarkovRandomField<Dimensions>::BayesianAnisotropicGaussMarkovRandomField(const cimg_library::CImg<bool> &mask, const int classes, const MarkovRandomFieldBase::Topology topology)
+: AnisotropicGaussMarkovRandomField<Dimensions>(mask, classes, topology), BayesianMarkovRandomField<Dimensions>(this->m_coefficients)
 {
 }
 
 template<int Dimensions>
-BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::BayesianAnisotropicGaussianMarkovRandomField(const BayesianAnisotropicGaussianMarkovRandomField<Dimensions> &other)
-: AnisotropicGaussianMarkovRandomField<Dimensions>(other), BayesianMarkovRandomField<Dimensions>(other)
+BayesianAnisotropicGaussMarkovRandomField<Dimensions>::BayesianAnisotropicGaussMarkovRandomField(const BayesianAnisotropicGaussMarkovRandomField<Dimensions> &other)
+: AnisotropicGaussMarkovRandomField<Dimensions>(other), BayesianMarkovRandomField<Dimensions>(other)
 {
 }
 
 template<int Dimensions>
-BayesianAnisotropicGaussianMarkovRandomField<Dimensions>& BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::operator = (const BayesianAnisotropicGaussianMarkovRandomField<Dimensions> &other)
+BayesianAnisotropicGaussMarkovRandomField<Dimensions>& BayesianAnisotropicGaussMarkovRandomField<Dimensions>::operator = (const BayesianAnisotropicGaussMarkovRandomField<Dimensions> &other)
 {
-    AnisotropicGaussianMarkovRandomField<Dimensions>::operator=(other);
+    AnisotropicGaussMarkovRandomField<Dimensions>::operator=(other);
     BayesianMarkovRandomField<Dimensions>::operator=(other);
     
     return *this;
 }
 
 template<int Dimensions>
-std::unique_ptr<MarkovRandomField<Dimensions>> BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::clone() const
+std::unique_ptr<MarkovRandomField<Dimensions>> BayesianAnisotropicGaussMarkovRandomField<Dimensions>::clone() const
 {
-    return std::unique_ptr<MarkovRandomField<Dimensions>>(new BayesianAnisotropicGaussianMarkovRandomField<Dimensions>(*this));
+    return std::unique_ptr<MarkovRandomField<Dimensions>>(new BayesianAnisotropicGaussMarkovRandomField<Dimensions>(*this));
 }
 
 template<int Dimensions>
-void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
+void BayesianAnisotropicGaussMarkovRandomField<Dimensions>::initialization(const ArrayXXd &coefficients)
 {
     if (coefficients.rows() != this->m_nodes && coefficients.cols() != this->m_classes)
     {
@@ -268,19 +268,19 @@ void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::initialization(co
 }
 
 template<int Dimensions>
-void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::updateDistributions()
+void BayesianAnisotropicGaussMarkovRandomField<Dimensions>::updateDistributions()
 {
 }
 
 template<int Dimensions>
-void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
+void BayesianAnisotropicGaussMarkovRandomField<Dimensions>::updateParameters(const ArrayXXd &posteriorProbabilities)
 {
     updateCoefficients(posteriorProbabilities);
     updateVariances();
 }
 
 template<int Dimensions>
-void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
+void BayesianAnisotropicGaussMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     ArrayXXd newConcentrations(this->m_nodes, this->m_classes);
 #pragma omp parallel for
@@ -331,7 +331,7 @@ void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::updateCoefficient
 }
 
 template<int Dimensions>
-void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::updateVariances()
+void BayesianAnisotropicGaussMarkovRandomField<Dimensions>::updateVariances()
 {
 #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
@@ -353,7 +353,7 @@ void BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::updateVariances()
 }
 
 template<int Dimensions>
-double BayesianAnisotropicGaussianMarkovRandomField<Dimensions>::logLikelihood()
+double BayesianAnisotropicGaussMarkovRandomField<Dimensions>::logLikelihood()
 {
     const double NM = (double) (this->m_nodes * this->m_cliques);
     const double NKDMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_directions * this->m_cliques) * 0.918938533204673;

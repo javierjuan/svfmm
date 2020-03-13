@@ -133,7 +133,7 @@ py::dict classify(const CImg<double> &image, const CImg<bool> &mask, const int k
 py::dict fit(const ndarray<double> &input, int k, const ndarray<bool> &mask, const ndarray<int> &initialization, const std::string &distribution, const std::string &topology,
              const std::string &tropism, const std::string &estimation, const bool patch, const int max_iterations, const double regularization, const double threshold, const bool verbose)
 {
-    const CImg<double> image = PyCImg::toCImg(input);
+    const CImg<double> image = PyCImg::toCImg<double>(input);
     
     CImg<bool> mask_ = PyCImg::toCImg(mask);
     std::string maskInitialization = "user provided mask";
