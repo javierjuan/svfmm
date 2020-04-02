@@ -141,7 +141,7 @@ double FrequentistIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::st
 template<int Dimensions, bool PatchBased>
 void FrequentistIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -166,7 +166,7 @@ void FrequentistIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::upda
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         ArrayXd coeffs_i(this->m_classes);
@@ -186,7 +186,7 @@ void FrequentistIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::upda
             double r1, r2;
 
             if (this->cuadraticSolver(a, b, c, r1, r2))
-                coeffs_i(j) = r1;
+                coeffs_i(j) = r1 > r2 ? r1 : r2;
             else
                 coeffs_i(j) = SVFMM_ZERO;
         }
@@ -198,7 +198,7 @@ void FrequentistIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::upda
 template<int Dimensions, bool PatchBased>
 void FrequentistIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double DNormal = 0;
@@ -244,7 +244,7 @@ double FrequentistIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::lo
     const double NKMLog2PIHalf = NKM * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double D = 0;
@@ -385,7 +385,7 @@ double FrequentistAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::
 template<int Dimensions, bool PatchBased>
 void FrequentistAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -413,7 +413,7 @@ void FrequentistAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::up
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         ArrayXd coeffs_i(this->m_classes);
@@ -440,7 +440,7 @@ void FrequentistAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::up
             double r1, r2;
 
             if (this->cuadraticSolver(a, b, c, r1, r2))
-                coeffs_i(j) = r1;
+                coeffs_i(j) = r1 > r2 ? r1 : r2;
             else
                 coeffs_i(j) = SVFMM_ZERO;
         }
@@ -452,7 +452,7 @@ void FrequentistAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::up
 template<int Dimensions, bool PatchBased>
 void FrequentistAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         for (int d = 0; d < this->m_directions; ++d)
@@ -504,7 +504,7 @@ double FrequentistAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::
     const double NKDMLog2PIHalf = NKDM * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double sumLogLikelihoodPerDirection = 0;

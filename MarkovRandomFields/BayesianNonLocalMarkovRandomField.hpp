@@ -142,7 +142,7 @@ double BayesianIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::stdQu
 template<int Dimensions, bool PatchBased>
 void BayesianIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -166,7 +166,7 @@ template<int Dimensions, bool PatchBased>
 void BayesianIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     ArrayXXd newConcentrations(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         const double Ai = this->m_concentrations.row(i).sum();
@@ -201,7 +201,7 @@ void BayesianIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateC
             newConcentrations(i, j) = alpha;
         }
     }
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; i++)
     {
         this->m_concentrations.row(i) = newConcentrations.row(i);
@@ -212,7 +212,7 @@ void BayesianIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateC
 template<int Dimensions, bool PatchBased>
 void BayesianIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double DNormal = 0;
@@ -258,7 +258,7 @@ double BayesianIsotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::logLi
     const double NKMLog2PIHalf = NKM * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double D = 0;
@@ -400,7 +400,7 @@ double BayesianAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::std
 template<int Dimensions, bool PatchBased>
 void BayesianAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -427,7 +427,7 @@ template<int Dimensions, bool PatchBased>
 void BayesianAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     ArrayXXd newConcentrations(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         const double Ai = this->m_concentrations.row(i).sum();
@@ -470,7 +470,7 @@ void BayesianAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updat
             newConcentrations(i, j) = alpha;
         }
     }
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; i++)
     {
         this->m_concentrations.row(i) = newConcentrations.row(i);
@@ -481,7 +481,7 @@ void BayesianAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updat
 template<int Dimensions, bool PatchBased>
 void BayesianAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         for (int d = 0; d < this->m_directions; ++d)
@@ -533,7 +533,7 @@ double BayesianAnisotropicNonLocalMarkovRandomField<Dimensions, PatchBased>::log
     const double NKDMLog2PIHalf = NKDM * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double sumLogLikelihoodPerDirection = 0;

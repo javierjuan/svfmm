@@ -118,7 +118,7 @@ void BayesianIsotropicTStudentMarkovRandomField<Dimensions>::updateParameters(co
 template<int Dimensions>
 void BayesianIsotropicTStudentMarkovRandomField<Dimensions>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -140,7 +140,7 @@ template<int Dimensions>
 void BayesianIsotropicTStudentMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     ArrayXXd newConcentrations(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         const double Ai = this->m_concentrations.row(i).sum();
@@ -175,7 +175,7 @@ void BayesianIsotropicTStudentMarkovRandomField<Dimensions>::updateCoefficients(
             newConcentrations(i, j) = alpha;
         }
     }
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; i++)
     {
         this->m_concentrations.row(i) = newConcentrations.row(i);
@@ -186,7 +186,7 @@ void BayesianIsotropicTStudentMarkovRandomField<Dimensions>::updateCoefficients(
 template<int Dimensions>
 void BayesianIsotropicTStudentMarkovRandomField<Dimensions>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double D = 0;
@@ -209,7 +209,7 @@ double BayesianIsotropicTStudentMarkovRandomField<Dimensions>::logLikelihood()
     const double NKMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_cliques) * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         const double nuHalf = this->m_nu(j) / 2.0;
@@ -332,7 +332,7 @@ void BayesianAnisotropicTStudentMarkovRandomField<Dimensions>::updateParameters(
 template<int Dimensions>
 void BayesianAnisotropicTStudentMarkovRandomField<Dimensions>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -357,7 +357,7 @@ template<int Dimensions>
 void BayesianAnisotropicTStudentMarkovRandomField<Dimensions>::updateCoefficients(const ArrayXXd &posteriorProbabilities)
 {
     ArrayXXd newConcentrations(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         const double Ai = this->m_concentrations.row(i).sum();
@@ -400,7 +400,7 @@ void BayesianAnisotropicTStudentMarkovRandomField<Dimensions>::updateCoefficient
             newConcentrations(i, j) = alpha;
         }
     }
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; i++)
     {
         this->m_concentrations.row(i) = newConcentrations.row(i);
@@ -411,7 +411,7 @@ void BayesianAnisotropicTStudentMarkovRandomField<Dimensions>::updateCoefficient
 template<int Dimensions>
 void BayesianAnisotropicTStudentMarkovRandomField<Dimensions>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         for (int d = 0; d < this->m_directions; ++d)
@@ -437,7 +437,7 @@ double BayesianAnisotropicTStudentMarkovRandomField<Dimensions>::logLikelihood()
     const double NKDMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_directions * this->m_cliques) * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double sumLogLikelihoodPerDirection = 0;

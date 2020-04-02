@@ -149,7 +149,7 @@ void IsotropicTStudentMarkovRandomField<Dimensions>::updateFreedomDegrees()
     const int cliques = int(m_weights.dimension(1));
     const int classes = int(m_weights.dimension(2));
     
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < classes; ++j)
     {
         double sumWeights = 0;
@@ -257,7 +257,7 @@ void AnisotropicTStudentMarkovRandomField<Dimensions>::updateFreedomDegrees()
     const int cliques    = int(m_weights.dimension(2));
     const int classes    = int(m_weights.dimension(3));
     
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int d = 0; d < directions; ++d)
     {
         for (int j = 0; j < classes; ++j)

@@ -117,7 +117,7 @@ void FrequentistIsotropicTStudentMarkovRandomField<Dimensions>::updateParameters
 template<int Dimensions>
 void FrequentistIsotropicTStudentMarkovRandomField<Dimensions>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -140,7 +140,7 @@ void FrequentistIsotropicTStudentMarkovRandomField<Dimensions>::updateCoefficien
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         ArrayXd coeffs_i(this->m_classes);
@@ -160,7 +160,7 @@ void FrequentistIsotropicTStudentMarkovRandomField<Dimensions>::updateCoefficien
             double r1, r2;
 
             if (this->cuadraticSolver(a, b, c, r1, r2))
-                coeffs_i(j) = r1;
+                coeffs_i(j) = r1 > r2 ? r1 : r2;
             else
                 coeffs_i(j) = SVFMM_ZERO;
         }
@@ -172,7 +172,7 @@ void FrequentistIsotropicTStudentMarkovRandomField<Dimensions>::updateCoefficien
 template<int Dimensions>
 void FrequentistIsotropicTStudentMarkovRandomField<Dimensions>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double D = 0;
@@ -195,7 +195,7 @@ double FrequentistIsotropicTStudentMarkovRandomField<Dimensions>::logLikelihood(
     const double NKMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_cliques) * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         const double nuHalf = this->m_nu(j) / 2.0;
@@ -317,7 +317,7 @@ void FrequentistAnisotropicTStudentMarkovRandomField<Dimensions>::updateParamete
 template<int Dimensions>
 void FrequentistAnisotropicTStudentMarkovRandomField<Dimensions>::updateWeights()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         for (int j = 0; j < this->m_classes; ++j)
@@ -343,7 +343,7 @@ void FrequentistAnisotropicTStudentMarkovRandomField<Dimensions>::updateCoeffici
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         ArrayXd coeffs_i(this->m_classes);
@@ -370,7 +370,7 @@ void FrequentistAnisotropicTStudentMarkovRandomField<Dimensions>::updateCoeffici
             double r1, r2;
 
             if (this->cuadraticSolver(a, b, c, r1, r2))
-                coeffs_i(j) = r1;
+                coeffs_i(j) = r1 > r2 ? r1 : r2;
             else
                 coeffs_i(j) = SVFMM_ZERO;
         }
@@ -382,7 +382,7 @@ void FrequentistAnisotropicTStudentMarkovRandomField<Dimensions>::updateCoeffici
 template<int Dimensions>
 void FrequentistAnisotropicTStudentMarkovRandomField<Dimensions>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         for (int d = 0; d < this->m_directions; ++d)
@@ -408,7 +408,7 @@ double FrequentistAnisotropicTStudentMarkovRandomField<Dimensions>::logLikelihoo
     const double NKDMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_directions * this->m_cliques) * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double sumLogLikelihoodPerDirection = 0;

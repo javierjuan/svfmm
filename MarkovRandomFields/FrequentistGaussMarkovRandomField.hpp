@@ -110,7 +110,7 @@ void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::updateCoefficients(
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         ArrayXd coeffs_i(this->m_classes);
@@ -138,7 +138,7 @@ void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::updateCoefficients(
 template<int Dimensions>
 void FrequentistIsotropicGaussMarkovRandomField<Dimensions>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double D = 0;
@@ -161,7 +161,7 @@ double FrequentistIsotropicGaussMarkovRandomField<Dimensions>::logLikelihood()
     const double NKMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_cliques) * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double D = 0;
@@ -269,7 +269,7 @@ void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::updateCoefficient
 {
     const ArrayXd weights = ArrayXd::Ones(this->m_classes);
     ArrayXXd newCoefficients(this->m_nodes, this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < this->m_nodes; ++i)
     {
         ArrayXd coeffs_i(this->m_classes);
@@ -305,7 +305,7 @@ void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::updateCoefficient
 template<int Dimensions>
 void FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::updateVariances()
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         for (int d = 0; d < this->m_directions; ++d)
@@ -331,7 +331,7 @@ double FrequentistAnisotropicGaussMarkovRandomField<Dimensions>::logLikelihood()
     const double NKDMLog2PIHalf = (double) (this->m_nodes * this->m_classes * this->m_directions * this->m_cliques) * 0.918938533204673;
     
     ArrayXd logLikelihood(this->m_classes);
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int j = 0; j < this->m_classes; ++j)
     {
         double sumLogLikelihoodPerDirection = 0;
